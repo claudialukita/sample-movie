@@ -19,6 +19,7 @@ class UpcomingMoviesViewModel extends StateNotifier<AsyncState<List<Movie>>> {
     try{
       var movies = await _movieService.getUpcoming(1, 5);
       state = new Success(movies);
+      print(movies);
     }catch(exception){
       state = new Error('Something went wrong', state.data);
     }

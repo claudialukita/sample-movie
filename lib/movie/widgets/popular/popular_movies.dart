@@ -8,6 +8,7 @@ import 'package:moviedb/movie/widgets/popular/popular_movies_view_model.dart';
 class PopularMovies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('screen: home');
     return Container(
       alignment: Alignment.centerLeft,
       child: Column(
@@ -35,10 +36,15 @@ class PopularMovies extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.only(top: 5, left: 10),
-                        child: Image.network(state.data[index].poster,
-                            height: 300, width: 150),
-                      );
+                          margin: EdgeInsets.only(top: 5, left: 10),
+                          child: GestureDetector(
+                            onTap: () => {
+                              Navigator.pushNamed(
+                                  context, '/MovieDetailScreen', arguments: state.data[index].id)
+                            },
+                            child: Image.network(state.data[index].poster,
+                                height: 300, width: 150),
+                          ));
                     }),
               );
             }

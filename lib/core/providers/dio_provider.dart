@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -25,6 +23,29 @@ class AppDio with DioMixin implements Dio {
     );
 
     this.options = options;
+    this.interceptors.add(InterceptorsWrapper(
+      onRequest: (requestOptions, handler){
+        var token = 'abcdefghijklmnopqrstuvwxyz';
+        Map tokenHeader = new Map<String, String>();
+        if (token != null){
+          tokenHeader['Authorization'] = 'Bearer' + token.toString();
+          requestOptions.headers.addAll(tokenHeader as Map<String, dynamic>);
+        }
+
+        return handler.next(requestOptions);
+      },
+      onError: (requestOptions, handler){
+        print('Error...');
+        return handler.next(requestOptions);
+      },
+      onResponse: (requestOptions, handler){
+        var temp = requestOptions.data;
+        requestOptions.data = temp;
+        return handler.next(requestOptions);
+      }
+    ));
+
+
     this.interceptors.add(InterceptorsWrapper(
       onRequest: (requestOptions, handler){
         var token = 'adjhsakdjhaskdjhasjd';
