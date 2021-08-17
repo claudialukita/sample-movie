@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moviedb/detail/widgets/app_bar/app_bar.dart';
+import 'package:moviedb/detail/widgets/movie_casts_view_model.dart';
+import 'package:moviedb/detail/widgets/movie_detail_section/movie_detail_section.dart';
 import 'package:moviedb/detail/widgets/movie_detail_view_model.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -19,18 +20,13 @@ class MovieDetailScreen extends StatelessWidget {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       context.read(movieDetailViewModelProvider.notifier).loadData(movieId);
     });
-    // final movieId = ModalRoute.of(context)!.settings.arguments as int;
-    // context.read(movieDetailViewModelProvider.notifier).loadData(movieId);
-    // final _state = watch(movieDetailViewModelProvider);
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      context.read(movieCastViewModelProvider.notifier).loadData(movieId);
+    });
 
-    // if (_state is Loading) {
-    //   print("coba: loading");
-    // } else {
-    //   print("coba: success");
-    // }
     return Scaffold(
       body:
-          AppBarSection(),
+          MovieDetailSection(),
       );
   }
 }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/core/common/constants.dart';
 import 'package:moviedb/core/models/movie.dart';
+import 'package:moviedb/core/models/movie_cast.dart';
 import 'package:moviedb/core/models/movie_detail.dart';
 import 'package:moviedb/core/providers/dio_provider.dart';
 
@@ -69,18 +70,17 @@ class MovieService {
     Map<int, dynamic> dataGenre = Map.fromIterable(response.data['genres'],
         key: (e) => response.data['genres'].indexOf(e),
         value: (e) => e["name"]);
-    print(response.data.length);
-    print(response.data['vote_count']);
+    print("coba: open movie detail");
+    print(response.data['vote_average'].runtimeType);
+    print(response.data['vote_count'].runtimeType);
+    print("coba: close movie detail");
+
     if (response.data.length > 0) {
       MovieDetail newMovieDetail = new MovieDetail(
         response.data['id'],
         response.data['title'],
-        8.1,
-        2050,
-        // response.data['vote_count'],
-        // double.parse(response.data['vote_average']),
-        // double.parse(response.data['vote_count']),
-        // response.data['poster_path'],
+        response.data['vote_average'],
+        response.data['vote_count'],
         'https://www.themoviedb.org/t/p/w780${response.data['poster_path']}',
         'https://www.themoviedb.org/t/p/w780${response.data['backdrop_path']}',
         dataGenre,
@@ -95,5 +95,31 @@ class MovieService {
     }
 
     return movies;
+  }
+
+  Future<List<MovieCast>> getMovieCast(int movieId) async {
+    List<MovieCast> movieCasts = [];
+
+    var response = await _dio.get(
+        '${API_URL}movie/${movieId}/credits?api_key=${API_KEY}&language=en-US');
+    //https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=<<api_key>>&language=en-US
+    print(response.data['id']);
+    print(response.data['cast'][0]['name']);
+    print(response.data['cast'][0]['original_name']);
+    print(response.data['cast'][0]['profile_path']);
+    if (response.data.length > 0) {
+      MovieCast newMovieCast = new MovieCast(
+        response.data['id'],
+        response.data['cast'],
+      );
+      movieCasts.add(newMovieCast);
+      print("Dapet respon ini nih");
+      print(movieCasts);
+      // if (movieCasts.length == pageSize) {
+      //   break;
+      // }
+    }
+
+    return movieCasts;
   }
 }

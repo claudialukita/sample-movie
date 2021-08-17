@@ -9,11 +9,7 @@ final movieDetailViewModelProvider =
 
 class MovieDetailViewModel extends StateNotifier<AsyncState<List<MovieDetail>>> {
   final MovieService _movieService;
-  MovieDetailViewModel(this._movieService) : super(Initial<List<MovieDetail>>([]))
-  // {
-  //   loadData();
-  // }
-;
+  MovieDetailViewModel(this._movieService) : super(Initial<List<MovieDetail>>([]));
 
   loadData(int movieId) async {
     state = Loading(state.data);

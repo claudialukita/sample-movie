@@ -2,7 +2,7 @@ class MovieDetail{
   final int id;
   final String title;
   final double rating;
-  final double voteCount;
+  final int voteCount;
   final String poster;
   final String backdrop;
   final Map<int, dynamic> genres;
