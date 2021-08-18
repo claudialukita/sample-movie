@@ -214,17 +214,14 @@ class MovieDetailSection extends ConsumerWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return
-                      Container(
-                      margin: EdgeInsets.all(16),
-                      child:
-                      Column(
+                    return Container(
+                      decoration: BoxDecoration(color: Color(0xFF191926)),
+                      padding: EdgeInsets.all(16),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("sinopsis",
                               style: Theme.of(context).textTheme.headline1),
-                          // Flexible(
-                          //   child:
                           RichText(
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
@@ -263,14 +260,13 @@ class MovieDetailSection extends ConsumerWidget {
                                             .textTheme
                                             .headline3),
                                     // Opacity(
-                                      // opacity: 0.5,
-                                      // child:
-                                      Text("See All",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3),
+                                    // opacity: 0.5,
+                                    // child:
+                                    Text("See All",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3),
                                     // ),
-
                                   ],
                                 ),
                                 Container(
@@ -322,43 +318,6 @@ class MovieDetailSection extends ConsumerWidget {
                   childCount: 1,
                 ),
               ),
-              // SliverFillRemaining(
-              //   child: Container(
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text("sinopsis",
-              //             style: Theme.of(context).textTheme.headline1),
-              //         Flexible(
-              //           child: RichText(
-              //             maxLines: 3,
-              //             overflow: TextOverflow.ellipsis,
-              //             // strutStyle: StrutStyle(fontSize: 12, fontFamily: 'Open Sans'),
-              //             text: TextSpan(
-              //                 style: Theme.of(context).textTheme.bodyText2,
-              //                 text: _state.data[0].overview),
-              //           ),
-              //         ),
-              //         SizedBox(height: 10),
-              //         Text("Trailer",
-              //             style: Theme.of(context).textTheme.headline1),
-              //         YoutubePlayer(
-              //           controller: YoutubePlayerController(
-              //             initialVideoId: 'RFZG_IG9EqA', //Add videoID.
-              //             flags: YoutubePlayerFlags(
-              //               hideControls: false,
-              //               controlsVisibleAtStart: true,
-              //               autoPlay: false,
-              //               mute: false,
-              //             ),
-              //           ),
-              //           showVideoProgressIndicator: true,
-              //           // progressIndicatorColor: Color.primary,
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
             ],
           )
         : CircularProgressIndicator();
