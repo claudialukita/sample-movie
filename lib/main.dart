@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
               headline4: TextStyle(fontSize: 12,color: Color(0xFFD8D8D8), fontWeight: FontWeight.w700),
               headline5: TextStyle(fontSize: 10,color: Color(0xFF565665)),
               headline6: TextStyle(fontSize: 10,color: Colors.white),
+              overline: TextStyle(fontSize: 8,color: Color(0xFFFF3466)),
               button: TextStyle(fontSize: 14,color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
             ),
           elevatedButtonTheme: ElevatedButtonThemeData(
