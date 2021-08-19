@@ -1,19 +1,17 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moviedb/core/common/constants.dart';
-import 'package:moviedb/core/models/favorite_movie.dart';
 import 'package:moviedb/core/models/movie.dart';
 import 'package:moviedb/core/models/movie_cast.dart';
 import 'package:moviedb/core/models/movie_detail.dart';
 import 'package:moviedb/core/providers/dio_provider.dart';
 import 'package:moviedb/core/providers/storage_provider.dart';
 
-final movieServiceProvider =
-    Provider((ref) => MovieService(ref.read(dioProvider), ref.read(storageProvider)));
+final movieServiceProvider = Provider(
+    (ref) => MovieService(ref.read(dioProvider), ref.read(storageProvider)));
 
 class MovieService {
   final Dio _dio;
@@ -70,18 +68,11 @@ class MovieService {
   }
 
   Future<MovieDetail> getMovieDetail(int movieId) async {
-    MovieDetail newMovieDetail;
-
     var response = await _dio.get(
         '${API_URL}movie/${movieId}?api_key=${API_KEY}&append_to_response=videos,images');
     Map<int, dynamic> dataGenre = Map.fromIterable(response.data['genres'],
         key: (e) => response.data['genres'].indexOf(e),
         value: (e) => e["name"]);
-    print("coba: open movie detail");
-    print(response.data['vote_average'].runtimeType);
-    print(response.data['vote_count'].runtimeType);
-    print("coba: close movie detail");
-
     if (response.data.length > 0) {
       MovieDetail newMovieDetail = new MovieDetail(
         response.data['id'],
@@ -92,19 +83,13 @@ class MovieService {
         'https://www.themoviedb.org/t/p/w780${response.data['backdrop_path']}',
         dataGenre,
         response.data['overview'],
+        response.data['runtime'],
+        response.data['adult'],
       );
-      // movies.add(newMovieDetail);
-      print("Dapet respon ini nih");
-      print(newMovieDetail);
-      // if (movies.length == pageSize) {
-      //   break;
-      // }
       return newMovieDetail;
-
     } else {
       throw Exception('Movie not found.');
     }
-
   }
 
   Future<List<MovieCast>> getMovieCast(int movieId) async {
@@ -133,12 +118,53 @@ class MovieService {
     return movieCasts;
   }
 
-  Future setFavoritedMovie(int movieId) async {
-    // String temp = json.encode(favoriteMovieList.toJson());
-    String strMovieId = movieId.toString();
-    // FavoriteMovie tempFavoriteMovieList = FavoriteMovie.fromJson(json.decode(temp));
-    await _storageProvider.write(key: 'trykey', value: strMovieId);
-    var response = await _storageProvider.read(key: 'trykey');
-    print(response.runtimeType);
+  Future setFavoritedMovie(var favoriteMovie) async {
+    var addFavoriteMovie = favoriteMovie.toString();
+    await _storageProvider.write(key: 'favoriteMovie', value: addFavoriteMovie);
+  }
+
+  Future removeFavoritedMovie(var favoriteMovie) async {
+    await _storageProvider.deleteAll();
+    var addFavoriteMovie = favoriteMovie.toString();
+    await _storageProvider.write(key: 'favoriteMovie', value: addFavoriteMovie);
+  }
+
+  Future getAllFavoriteMovie() async {
+    List<dynamic> allFavoriteMovie = [];
+    Map<String, dynamic> temp = await _storageProvider.readAll();
+    allFavoriteMovie = (json.decode(temp['favoriteMovie']) as List)
+        .map((item) => item as dynamic)
+        .toList();
+    return allFavoriteMovie;
+  }
+
+  Future<List<MovieDetail>> getFavoriteMovieDetail(
+      List<dynamic> idFavoriteMovie) async {
+    List<MovieDetail> movies = [];
+    for (dynamic movieId in idFavoriteMovie) {
+      var response = await _dio.get(
+          '${API_URL}movie/${movieId}?api_key=${API_KEY}&append_to_response=videos,images');
+      Map<int, dynamic> dataGenre = Map.fromIterable(response.data['genres'],
+          key: (e) => response.data['genres'].indexOf(e),
+          value: (e) => e["name"]);
+      if (response.data.length > 0) {
+        MovieDetail newMovieDetail = new MovieDetail(
+          response.data['id'],
+          response.data['title'],
+          response.data['vote_average'],
+          response.data['vote_count'],
+          'https://www.themoviedb.org/t/p/w780${response.data['poster_path']}',
+          'https://www.themoviedb.org/t/p/w780${response.data['backdrop_path']}',
+          dataGenre,
+          response.data['overview'],
+          response.data['runtime'],
+          response.data['adult'],
+        );
+        movies.add(newMovieDetail);
+      } else {
+        throw Exception('Movie not found.');
+      }
+    }
+    return movies;
   }
 }

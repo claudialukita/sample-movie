@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/main_tab/main_tab_screen.dart';
-import 'package:moviedb/movie/movie_screen.dart';
 
-import 'detail/widgets/movie_detail_screen.dart';
+import 'detail/screen/movie_detail_screen.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -26,6 +25,8 @@ class MyApp extends StatelessWidget {
               bodyText2: TextStyle(fontSize: 12,color: Color(0xFFDEDDDF), height: 1.8),
               headline3: TextStyle(fontSize: 14,color: Color(0xFFECECEC), letterSpacing: -0.17),
               headline4: TextStyle(fontSize: 12,color: Color(0xFFD8D8D8), fontWeight: FontWeight.w700),
+              headline5: TextStyle(fontSize: 10,color: Color(0xFF565665)),
+              headline6: TextStyle(fontSize: 10,color: Colors.white),
               button: TextStyle(fontSize: 14,color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
             ),
           elevatedButtonTheme: ElevatedButtonThemeData(
@@ -39,7 +40,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        // home: MainTabScreen(),
         initialRoute: '/',
         routes: {
           '/': (context) => MainTabScreen(),

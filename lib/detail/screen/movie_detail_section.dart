@@ -4,26 +4,20 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/core/models/async_state.dart';
-import 'package:moviedb/detail/widgets/movie_casts_view_model.dart';
-import 'package:moviedb/detail/widgets/movie_detail_view_model.dart';
+import 'package:moviedb/detail/view_model/favorited_movie_view_model.dart';
+import 'package:moviedb/detail/view_model/movie_casts_view_model.dart';
+import 'package:moviedb/detail/view_model/movie_detail_view_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieDetailSection extends ConsumerWidget {
   ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //     SystemUiOverlayStyle(statusBarColor: Colors.transparent
-    //         //color set to transperent or set your own color
-    //         ));
-    //dipanggil ketika widget sudah ready
 
-    // context.read(movieDetailViewModelProvider.notifier).loadData(movieId)
     final _state = watch(movieDetailViewModelProvider);
     final _stateCast = watch(movieCastViewModelProvider);
     //note: dipisah
 
-    print("coba: appbarsection");
     return (_state is Success && _stateCast is Success)
         ? CustomScrollView(
             controller: _scrollController,
@@ -67,23 +61,51 @@ class MovieDetailSection extends ConsumerWidget {
                         ),
                       ),
                       actions: <Widget>[
-                        Row(
-                          children: [
-                            // Icon(
-                            //   Icons.favorite,
-                            //   size: 25.0,
-                            // ),
-                            IconButton(
-                              onPressed: () =>
-                                  {}, //context.read(favoritedMovieViewModelProvider.notifier).loadData(_state.data[0].id),
-                              icon: Icon(
-                                Icons.favorite,
-                                // color: Colors.transparent, //Theme.of(context).iconTheme.color,
+                        Consumer(builder: (context, watch, child) {
+                          var _stateFavorite =
+                              watch(favoritedMovieViewModelProvider);
+                          var _stateIsFavorite =
+                              watch(favoritedMovieViewModelProvider);
+                          return Row(
+                            children: [
+                              // Icon(
+                              //   Icons.favorite,
+                              //   size: 25.0,
+                              // ),
+                              Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(11.5),
+                                    child: Icon(
+                                      Icons.favorite,
+                                      size: 25.0,
+                                      color: _stateIsFavorite
+                                          ? Colors.transparent
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: IconButton(
+                                      onPressed: () => context
+                                          .read(favoritedMovieViewModelProvider
+                                              .notifier)
+                                          .addToFavorite(_state.data!.id),
+                                      icon: Icon(
+                                        Icons.favorite,
+                                        color: _stateFavorite
+                                            ? Color(0xFFFF3F6E)
+                                            : Colors
+                                                .transparent, //Theme.of(context).iconTheme.color,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            // SizedBox(width: 10)
-                          ],
-                        ),
+
+                              // SizedBox(width: 10)
+                            ],
+                          );
+                        })
                       ],
                     ),
                     FlexibleSpaceBar(
@@ -282,7 +304,9 @@ class MovieDetailSection extends ConsumerWidget {
                                     itemCount: _stateCast.data![0].casts.length,
                                     itemBuilder: (context, index) {
                                       var _isAvailable = false;
-                                      if (_stateCast.data![0].casts[index]['profile_path'] != null){
+                                      if (_stateCast.data![0].casts[index]
+                                              ['profile_path'] !=
+                                          null) {
                                         _isAvailable = true;
                                       }
                                       return Row(

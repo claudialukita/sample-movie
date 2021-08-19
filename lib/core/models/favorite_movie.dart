@@ -1,14 +1,14 @@
 class FavoriteMovie{
-  final String? id;
+  final List? favorite;
   // final Map<int, dynamic> id;
 
-  FavoriteMovie(this.id);
+  FavoriteMovie(this.favorite);
 
-  FavoriteMovie.fromJson(Map<int, dynamic> json)
-      : id = json['id'];
+  // FavoriteMovie.fromJson(Map<String, dynamic> json)
+  //     : id = json['id'];
 
-  Map<int, dynamic> toJson() => {
-    0 : id
+  Map<String, dynamic> toJson() => {
+    'favoriteMovie' : favorite
   };
 
 }
