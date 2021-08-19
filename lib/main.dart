@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/main_tab/main_tab_screen.dart';
 
-import 'detail/screen/movie_detail_screen.dart';
+import 'detail/movie_detail_screen.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));

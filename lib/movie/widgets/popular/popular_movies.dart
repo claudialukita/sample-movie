@@ -8,7 +8,7 @@ import 'package:moviedb/movie/widgets/popular/popular_movies_view_model.dart';
 class PopularMovies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('screen: home');
+    print('widgets: home');
     return Container(
       alignment: Alignment.centerLeft,
       child: Column(

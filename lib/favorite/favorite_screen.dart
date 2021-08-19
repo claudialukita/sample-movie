@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/detail/view_model/favorite_list_view_model.dart';
-import 'package:moviedb/favorite/favorite_list.dart';
+import 'package:moviedb/favorite/widgets/favorite_list.dart';
 import 'package:moviedb/main_tab/main_tab_view_model.dart';
 
 class FavoriteScreen extends ConsumerWidget{
