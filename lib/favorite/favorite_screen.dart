@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:moviedb/core/providers/analytics_provider.dart';
 import 'package:moviedb/detail/view_model/favorite_list_view_model.dart';
 import 'package:moviedb/favorite/widgets/favorite_list.dart';
 import 'package:moviedb/main_tab/main_tab_view_model.dart';
@@ -8,6 +9,9 @@ import 'package:moviedb/main_tab/main_tab_view_model.dart';
 class FavoriteScreen extends ConsumerWidget{
   @override
   Widget build(BuildContext context, watch) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      await context.read(analyticsProvider).logEvent(name: 'favorite_screen');
+    });
 
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       context.read(favoriteListViewModelProvider.notifier).loadData();

@@ -1,4 +1,4 @@
-package com.drakemd.moviedb
+package com.cldlk.moviedb
 
 import io.flutter.embedding.android.FlutterActivity
 
