@@ -26,25 +26,25 @@ class MovieDetailViewModel extends StateNotifier<AsyncState<MovieDetail>> {
   }
   //cek ada di secure storage atau ngga, if ada likenya on
 
-  addToFavorite(int movieId) async {
-    //array of string
-    //json
-    //read secure storage
-    //if not null
-    //parse array of string
-    //add id baru
-    //write
-    //if null
-    //langsung write
-    state = Loading(state.data);
-    try {
-      var movies = await _movieService.setFavoritedMovie(favoriteMovieList);
-      print(movies);
-      state = Success(movies);
-    } catch (exception) {
-      state = Error('Something went wrong', state.data);
-    }
-  }
+  // addToFavorite(int movieId) async {
+  //   //array of string
+  //   //json
+  //   //read secure storage
+  //   //if not null
+  //   //parse array of string
+  //   //add id baru
+  //   //write
+  //   //if null
+  //   //langsung write
+  //   state = Loading(state.data);
+  //   try {
+  //     var movies = await _movieService.setFavoritedMovie(favoriteMovieList);
+  //     print(movies);
+  //     state = Success(movies);
+  //   } catch (exception) {
+  //     state = Error('Something went wrong', state.data);
+  //   }
+  // }
 
   //getFavoriteList
   

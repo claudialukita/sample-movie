@@ -4,7 +4,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/core/models/async_state.dart';
-import 'package:moviedb/detail/widgets/favorited_movie_view_model.dart';
 import 'package:moviedb/detail/widgets/movie_casts_view_model.dart';
 import 'package:moviedb/detail/widgets/movie_detail_view_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -23,10 +22,9 @@ class MovieDetailSection extends ConsumerWidget {
     final _state = watch(movieDetailViewModelProvider);
     final _stateCast = watch(movieCastViewModelProvider);
     //note: dipisah
-    // (_stateCast is Success) ? print(_stateCast.data[1]) : CircularProgressIndicator();
 
     print("coba: appbarsection");
-    return (_state is Success)
+    return (_state is Success && _stateCast is Success)
         ? CustomScrollView(
             controller: _scrollController,
             slivers: <Widget>[
@@ -40,7 +38,7 @@ class MovieDetailSection extends ConsumerWidget {
                   children: <Widget>[
                     Positioned.fill(
                         child: Image.network(
-                      _state.data[0].backdrop,
+                      _state.data!.backdrop,
                       fit: BoxFit.cover,
                       // height: 360,
                       // width: 375,
@@ -71,19 +69,19 @@ class MovieDetailSection extends ConsumerWidget {
                       actions: <Widget>[
                         Row(
                           children: [
-                            Icon(
-                              Icons.favorite,
-                              size: 25.0,
-                            ),
+                            // Icon(
+                            //   Icons.favorite,
+                            //   size: 25.0,
+                            // ),
                             IconButton(
-                              onPressed: () => context.read(favoritedMovieViewModelProvider.notifier).loadData(_state.data[0].id),
+                              onPressed: () =>
+                                  {}, //context.read(favoritedMovieViewModelProvider.notifier).loadData(_state.data[0].id),
                               icon: Icon(
                                 Icons.favorite,
-                                color: Colors
-                                    .transparent, //Theme.of(context).iconTheme.color,
+                                // color: Colors.transparent, //Theme.of(context).iconTheme.color,
                               ),
                             ),
-                            SizedBox(width: 10)
+                            // SizedBox(width: 10)
                           ],
                         ),
                       ],
@@ -110,7 +108,7 @@ class MovieDetailSection extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text(_state.data[0].title,
+                                  Text(_state.data!.title,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline1),
@@ -120,7 +118,7 @@ class MovieDetailSection extends ConsumerWidget {
                                     child: ListView.builder(
                                         shrinkWrap: true,
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: _state.data[0].genres.length,
+                                        itemCount: _state.data!.genres.length,
                                         itemBuilder: (context, index) {
                                           return Row(
                                             children: [
@@ -132,7 +130,7 @@ class MovieDetailSection extends ConsumerWidget {
                                                   size: 5.0,
                                                 ),
                                               ),
-                                              Text(_state.data[0].genres[index],
+                                              Text(_state.data!.genres[index],
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .subtitle1),
@@ -152,7 +150,7 @@ class MovieDetailSection extends ConsumerWidget {
                                             size: 18,
                                           ),
                                         ),
-                                        Text(_state.data[0].rating.toString(),
+                                        Text(_state.data!.rating.toString(),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1),
@@ -176,7 +174,7 @@ class MovieDetailSection extends ConsumerWidget {
                                           ),
                                         ),
                                         Text(
-                                            _state.data[0].voteCount
+                                            _state.data!.voteCount
                                                 .toInt()
                                                 .toString(),
                                             style: Theme.of(context)
@@ -208,7 +206,7 @@ class MovieDetailSection extends ConsumerWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: Image.network(
-                                  _state.data[0].poster,
+                                  _state.data!.poster,
                                   height: 236.0,
                                   width: 162,
                                 ),
@@ -238,7 +236,7 @@ class MovieDetailSection extends ConsumerWidget {
                             // strutStyle: StrutStyle(fontSize: 12, fontFamily: 'Open Sans'),
                             text: TextSpan(
                                 style: Theme.of(context).textTheme.bodyText2,
-                                text: _state.data[0].overview),
+                                text: _state.data!.overview),
                           ),
                           // ),
                           SizedBox(height: 10),
@@ -269,42 +267,51 @@ class MovieDetailSection extends ConsumerWidget {
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline3),
-                                    // Opacity(
-                                    // opacity: 0.5,
-                                    // child:
                                     Text("See All",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline3),
-                                    // ),
                                   ],
                                 ),
                                 Container(
                                   // width: 200,
-                                  height: 120,
+                                  height: 150,
                                   child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: _stateCast.data[0].casts.length,
+                                    itemCount: _stateCast.data![0].casts.length,
                                     itemBuilder: (context, index) {
+                                      var _isAvailable = false;
+                                      if (_stateCast.data![0].casts[index]['profile_path'] != null){
+                                        _isAvailable = true;
+                                      }
                                       return Row(
                                         children: [
                                           Container(
                                             margin: EdgeInsets.all(4),
                                             child: Column(
                                               children: [
-                                                Image.network(
-                                                    'https://www.themoviedb.org/t/p/w780' +
-                                                        _stateCast.data[0]
-                                                                .casts[index]
-                                                            ['profile_path'],
-                                                    height: 80,
-                                                    width: 80,
-                                                    fit: BoxFit.cover),
+                                                _isAvailable
+                                                    ? Image.network(
+                                                        'https://www.themoviedb.org/t/p/w780' +
+                                                            _stateCast.data![0]
+                                                                        .casts[
+                                                                    index][
+                                                                'profile_path'],
+                                                        height: 80,
+                                                        width: 80,
+                                                        fit: BoxFit.cover)
+                                                    : Container(
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .transparent),
+                                                        height: 80,
+                                                        width: 80,
+                                                      ),
                                                 Container(
                                                   width: 80,
                                                   child: Text(
-                                                      _stateCast.data[0]
+                                                      _stateCast.data![0]
                                                           .casts[index]['name'],
                                                       style: Theme.of(context)
                                                           .textTheme

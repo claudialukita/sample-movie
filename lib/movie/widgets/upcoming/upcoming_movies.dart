@@ -31,7 +31,7 @@ class UpcomingMovies extends StatelessWidget {
                   aspectRatio: 2.0,
                   enlargeCenterPage: true,
                 ),
-                items: renderBanner(state.data),
+                items: renderBanner(state.data!),
               );
             }
           })

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moviedb/favorite/favorite_list.dart';
 
 class FavoriteScreen extends StatelessWidget{
   @override
@@ -8,8 +7,8 @@ class FavoriteScreen extends StatelessWidget{
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        // child: Text('Favorite Screen'),
-        child: FavoriteList(),
+        child: Text('Favorite Screen'),
+        // child: FavoriteList(),
       ),
     );
   }

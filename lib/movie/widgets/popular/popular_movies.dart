@@ -32,7 +32,7 @@ class PopularMovies extends StatelessWidget {
                 height: 250,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: state.data.length,
+                    itemCount: state.data!.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Container(
@@ -40,9 +40,9 @@ class PopularMovies extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () => {
                               Navigator.pushNamed(
-                                  context, '/MovieDetailScreen', arguments: state.data[index].id)
+                                  context, '/MovieDetailScreen', arguments: state.data![index].id)
                             },
-                            child: Image.network(state.data[index].poster,
+                            child: Image.network(state.data![index].poster,
                                 height: 300, width: 150),
                           ));
                     }),
