@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:moviedb/main_tab/main_tab_screen.dart';
 import 'package:moviedb/movie/movie_screen.dart';
 
 import 'detail/widgets/movie_detail_screen.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         // home: MainTabScreen(),
         initialRoute: '/',
         routes: {
-          '/': (context) => MovieScreen(),
+          '/': (context) => MainTabScreen(),
           '/MovieDetailScreen': (context) => MovieDetailScreen(),
         });
   }

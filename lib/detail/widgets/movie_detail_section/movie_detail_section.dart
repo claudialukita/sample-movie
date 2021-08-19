@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/core/models/async_state.dart';
+import 'package:moviedb/detail/widgets/favorited_movie_view_model.dart';
 import 'package:moviedb/detail/widgets/movie_casts_view_model.dart';
 import 'package:moviedb/detail/widgets/movie_detail_view_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -21,6 +22,7 @@ class MovieDetailSection extends ConsumerWidget {
     // context.read(movieDetailViewModelProvider.notifier).loadData(movieId)
     final _state = watch(movieDetailViewModelProvider);
     final _stateCast = watch(movieCastViewModelProvider);
+    //note: dipisah
     // (_stateCast is Success) ? print(_stateCast.data[1]) : CircularProgressIndicator();
 
     print("coba: appbarsection");
@@ -72,6 +74,14 @@ class MovieDetailSection extends ConsumerWidget {
                             Icon(
                               Icons.favorite,
                               size: 25.0,
+                            ),
+                            IconButton(
+                              onPressed: () => context.read(favoritedMovieViewModelProvider.notifier).loadData(_state.data[0].id),
+                              icon: Icon(
+                                Icons.favorite,
+                                color: Colors
+                                    .transparent, //Theme.of(context).iconTheme.color,
+                              ),
                             ),
                             SizedBox(width: 10)
                           ],

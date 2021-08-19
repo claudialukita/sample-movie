@@ -1,18 +1,25 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moviedb/core/common/constants.dart';
+import 'package:moviedb/core/models/favorite_movie.dart';
 import 'package:moviedb/core/models/movie.dart';
 import 'package:moviedb/core/models/movie_cast.dart';
 import 'package:moviedb/core/models/movie_detail.dart';
 import 'package:moviedb/core/providers/dio_provider.dart';
+import 'package:moviedb/core/providers/storage_provider.dart';
 
 final movieServiceProvider =
-    Provider((ref) => MovieService(ref.read(dioProvider)));
+    Provider((ref) => MovieService(ref.read(dioProvider), ref.read(storageProvider)));
 
 class MovieService {
   final Dio _dio;
+  final FlutterSecureStorage _storageProvider;
 
-  MovieService(this._dio);
+  MovieService(this._dio, this._storageProvider);
 
   Future<List<Movie>> getPopularMovie(int page) async {
     List<Movie> movies = [];
@@ -62,8 +69,8 @@ class MovieService {
     return movies;
   }
 
-  Future<List<MovieDetail>> getMovieDetail(int movieId) async {
-    List<MovieDetail> movies = [];
+  Future<MovieDetail> getMovieDetail(int movieId) async {
+    MovieDetail newMovieDetail;
 
     var response = await _dio.get(
         '${API_URL}movie/${movieId}?api_key=${API_KEY}&append_to_response=videos,images');
@@ -86,15 +93,18 @@ class MovieService {
         dataGenre,
         response.data['overview'],
       );
-      movies.add(newMovieDetail);
+      // movies.add(newMovieDetail);
       print("Dapet respon ini nih");
-      print(movies);
+      print(newMovieDetail);
       // if (movies.length == pageSize) {
       //   break;
       // }
+      return newMovieDetail;
+
+    } else {
+      throw Exception('Movie not found.');
     }
 
-    return movies;
   }
 
   Future<List<MovieCast>> getMovieCast(int movieId) async {
@@ -121,5 +131,14 @@ class MovieService {
     }
 
     return movieCasts;
+  }
+
+  Future setFavoritedMovie(int movieId) async {
+    // String temp = json.encode(favoriteMovieList.toJson());
+    String strMovieId = movieId.toString();
+    // FavoriteMovie tempFavoriteMovieList = FavoriteMovie.fromJson(json.decode(temp));
+    await _storageProvider.write(key: 'trykey', value: strMovieId);
+    var response = await _storageProvider.read(key: 'trykey');
+    print(response.runtimeType);
   }
 }

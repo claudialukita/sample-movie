@@ -10,7 +10,5 @@ class MovieDetail{
 
   MovieDetail(this.id, this.title, this.rating, this.voteCount, this.poster, this.backdrop, this.genres, this.overview);
 
+
 }
-
-
-
