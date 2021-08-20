@@ -26,19 +26,6 @@ class FavoritedMovieViewModel extends StateNotifier<bool> {
   }
 
   addToFavorite(int movieId) async {
-    //array of string
-    //json
-    //read secure storage
-    //if not null
-    //parse array of string
-    //cek ada atau tidak dalam array
-    //kalau ada hapus dalam array
-    //kalau nggak ada
-    //add id baru
-    //write
-    //if null
-    //langsung write
-    // await _secureStorage.deleteAll();
     List<dynamic> favoriteMovieList = [];
     Map<String, dynamic> favMovieInList = await _secureStorage.readAll();
     print(favMovieInList);
@@ -58,13 +45,5 @@ class FavoritedMovieViewModel extends StateNotifier<bool> {
       await _movieService.setFavoritedMovie(favoriteMovieList);
       state = true;
     }
-
-
-    //kalau ada dalam array
-    // await _movieService.removeFavoritedMovie(movieId);
-
-    //kalau nggak ada dalam array
-    // await _movieService.setFavoritedMovie(movieId);
-    // state = true;
-  }
+    }
 }

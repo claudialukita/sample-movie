@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/core/models/async_state.dart';
-import 'package:moviedb/detail/view_model/favorite_list_view_model.dart';
+import 'package:moviedb/favorite/view_model/favorite_list_view_model.dart';
 
 class FavoriteList extends ConsumerWidget {
   @override
@@ -11,7 +11,7 @@ class FavoriteList extends ConsumerWidget {
     final _state = watch(favoriteListViewModelProvider);
     return (_state is Success)
         ? Container(
-            alignment: Alignment.center,
+            // alignment: Alignment.center,
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
