@@ -7,6 +7,7 @@ import 'package:moviedb/core/common/constants.dart';
 import 'package:moviedb/core/models/movie.dart';
 import 'package:moviedb/core/models/movie_cast.dart';
 import 'package:moviedb/core/models/movie_detail.dart';
+import 'package:moviedb/core/models/movie_trailer.dart';
 import 'package:moviedb/core/providers/dio_provider.dart';
 import 'package:moviedb/core/providers/storage_provider.dart';
 
@@ -90,6 +91,22 @@ class MovieService {
     } else {
       throw Exception('Movie not found.');
     }
+  }
+
+  Future<MovieTrailer> getMovieTrailer(int movieId) async {
+    var response = await _dio.get(
+        '${API_URL}movie/${movieId}/videos?api_key=${API_KEY}&language=en-US');
+    //https://api.themoviedb.org/3/movie/451048/videos?api_key=eab249049ea43c0715759caf21d3c716&language=en-US
+    final indexOfTrailer = response.data['results'].indexWhere((element) => element["type"] == "Trailer");
+    if (response.data.length > 0) {
+      MovieTrailer movieKeyTrailer = new MovieTrailer(
+        response.data['results'][indexOfTrailer]['key'],
+      );
+      return movieKeyTrailer;
+    } else {
+      throw Exception('Movie trailer not found.');
+    }
+
   }
 
   Future<List<MovieCast>> getMovieCast(int movieId) async {

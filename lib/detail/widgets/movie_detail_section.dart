@@ -7,6 +7,7 @@ import 'package:moviedb/core/models/async_state.dart';
 import 'package:moviedb/detail/view_model/favorited_movie_view_model.dart';
 import 'package:moviedb/detail/view_model/movie_casts_view_model.dart';
 import 'package:moviedb/detail/view_model/movie_detail_view_model.dart';
+import 'package:moviedb/detail/view_model/movie_trailer_view_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieDetailSection extends ConsumerWidget {
@@ -264,19 +265,26 @@ class MovieDetailSection extends ConsumerWidget {
                           SizedBox(height: 10),
                           Text("Trailer",
                               style: Theme.of(context).textTheme.headline1),
-                          YoutubePlayer(
-                            controller: YoutubePlayerController(
-                              initialVideoId: 'RFZG_IG9EqA', //Add videoID.
-                              flags: YoutubePlayerFlags(
-                                hideControls: false,
-                                controlsVisibleAtStart: true,
-                                autoPlay: false,
-                                mute: false,
+                          Consumer(builder: (context, watch, child) {
+                            final _stateTrailer = watch(movieTrailerViewModelProvider);
+                            print("coba: youtube trailer");
+                            if (_stateTrailer is Success){
+                              print(_stateTrailer.data!.key);
+                            }
+                            return (_stateTrailer is Success) ? YoutubePlayer(
+                              controller: YoutubePlayerController(
+                                initialVideoId: _stateTrailer.data!.key, //Add videoID.
+                                flags: YoutubePlayerFlags(
+                                  hideControls: false,
+                                  controlsVisibleAtStart: true,
+                                  autoPlay: false,
+                                  mute: false,
+                                ),
                               ),
-                            ),
-                            showVideoProgressIndicator: true,
-                            // progressIndicatorColor: Color.primary,
-                          ),
+                              showVideoProgressIndicator: true,
+                              // progressIndicatorColor: Color.primary,
+                            ) : CircularProgressIndicator();
+                          }),
                           SizedBox(height: 10),
                           Container(
                             child: Column(

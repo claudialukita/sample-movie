@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviedb/core/providers/analytics_provider.dart';
 import 'package:moviedb/detail/view_model/movie_detail_view_model.dart';
 import 'package:moviedb/detail/view_model/movie_casts_view_model.dart';
+import 'package:moviedb/detail/view_model/movie_trailer_view_model.dart';
 import 'package:moviedb/detail/widgets/movie_detail_section.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -27,6 +28,9 @@ class MovieDetailScreen extends StatelessWidget {
     });
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       context.read(movieCastViewModelProvider.notifier).loadData(movieId);
+    });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      context.read(movieTrailerViewModelProvider.notifier).loadData(movieId);
     });
 
     return Scaffold(

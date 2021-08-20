@@ -7,7 +7,4 @@ class Movie {
 
   Movie(this.id, this.title, this.rating, this.poster, this.backdrop);
 
-  void ToString(){
-
-  }
 }
